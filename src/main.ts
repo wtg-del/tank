@@ -1,10 +1,17 @@
 import './style.scss';
 import './reset.scss';
 import config from './config';
-import './canvas/straw';
-import './canvas/tank';
+import straw from './canvas/straw';
+import { promises } from './service/image';
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
 
 app.style.width = config.canvas.width + 'px';
 app.style.height = config.canvas.height + 'px';
+
+async function bootstrap() {
+  await Promise.all(promises);
+  straw.render();
+}
+
+bootstrap();
