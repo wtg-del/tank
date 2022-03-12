@@ -1,14 +1,14 @@
 import config from "../config";
 import CanvasAbstract from "./canvasAbstract";
-import model from "../model/straw";
+import model from "../model/water";
 
-class Straw extends CanvasAbstract implements ICanvas {
+class Water extends CanvasAbstract implements ICanvas {
   get name()  {
-    return 'straw';
+    return 'water';
   }
 
   get num() {
-    return config.straw.num;
+    return config.water.num;
   }
 
   get model() {
@@ -21,5 +21,5 @@ class Straw extends CanvasAbstract implements ICanvas {
   }
 }
 
-const straw = new Straw();
-export default straw;
+const water = new Water();
+export default water;

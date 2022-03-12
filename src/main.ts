@@ -1,17 +1,3 @@
-import './style.scss';
-import './reset.scss';
-import config from './config';
-import straw from './canvas/straw';
-import { promises } from './service/image';
+import app from './app';
 
-const app = document.querySelector<HTMLDivElement>('#app')!;
-
-app.style.width = config.canvas.width + 'px';
-app.style.height = config.canvas.height + 'px';
-
-async function bootstrap() {
-  await Promise.all(promises);
-  straw.render();
-}
-
-bootstrap();
+app.bootstrap();

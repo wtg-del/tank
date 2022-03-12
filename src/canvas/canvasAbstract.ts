@@ -2,13 +2,16 @@ import config from "../config";
 import position from "../service/position";
 
 abstract class CanvasAbstract {
-  protected models: IModel[] = [];
+  public models: IModel[] = [];
+  abstract get name(): string;
   abstract render(): void;
+  abstract get num (): number;
+  abstract get model (): ModelConstructor | BulletModelConstructor;
 
   constructor(
     protected app = document.querySelector<HTMLCanvasElement>('#app')!,
     protected el = document.createElement('canvas'),
-    protected canvas = el.getContext('2d')!,
+    public ctx = el.getContext('2d')!,
   ) {
     this.createCanvas();
   }
@@ -17,9 +20,11 @@ abstract class CanvasAbstract {
    * @description 创建画布
    */
   protected createCanvas() {
+    
     this.el.width = config.canvas.width;
     this.el.height = config.canvas.height;
-    this.app.insertAdjacentElement('afterbegin', this.el);
+    this.el.setAttribute('name', this.name);
+    this.app.appendChild(this.el);
   }
 
   /**
@@ -27,19 +32,24 @@ abstract class CanvasAbstract {
    * @param num 
    * @param Model 
    */
-  protected createModels(num: number, Model: ModelConstructor) {
-    position.getCollection(num).forEach(({ x, y }) => {
-      this.models.push(new Model(this.canvas, x, y));
+  protected createModels() {
+    position.getCollection(this.num).forEach(({ x, y }) => {
+      this.models.push(new this.model(x as any, y));
     });
   }
 
   /**
    * @description 模型渲染到画布
    */
-  protected renderModels() {
+  renderModels() {
+    this.ctx.clearRect(0, 0, config.canvas.width, config.canvas.height);
     this.models.forEach(model => {
       model.render();
     })
+  }
+
+  removeModel(model: IModel) {
+    this.models = this.models.filter(m => m !== model);
   }
 }
 
